@@ -1,4 +1,5 @@
-﻿<aside id="sidebar" class="sidebar break-point-sm has-bg-image @(IsCollapsed ? "collapsed" : "") @(IsToggled ? "toggled" : "")">
+﻿
+<aside id="sidebar" class="sidebar break-point-sm has-bg-image @(IsCollapsed ? "collapsed" : "") @(IsToggled ? "toggled" : "")">
     <a @onclick="BtnCollapseClicked" id="btn-collapse" class="sidebar-collapser"><i class="ri-arrow-left-s-line"></i></a>
     <div class="image-wrapper">
         @* <img src="assets/images/sidebar-bg.jpg" alt="sidebar background" /> *@
@@ -192,33 +193,24 @@
                         </div>
                     </li>
                     <li class="menu-header" style="padding-top: 20px"><span> EXTRA </span></li>
-                    <li class="menu-item">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-book-2-fill"></i>
-                            </span>
-                            <span class="menu-title">Documentation</span>
-                            <span class="menu-suffix">
-                                <span class="badge secondary">Beta</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-calendar-fill"></i>
-                            </span>
-                            <span class="menu-title">Calendar</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-service-fill"></i>
-                            </span>
-                            <span class="menu-title">Examples</span>
-                        </a>
-                    </li>
+                    
+                    @foreach (var menuItem in extraMenuItems)
+                    {
+                        <li class="menu-item">
+                            <a href="@menuItem.Href">
+                                <span class="menu-icon">
+                                    <i class="@menuItem.Icon"></i>
+                                </span>
+                                <span class="menu-title">@menuItem.Title</span>
+                                @if (menuItem.Suffix != null)
+                                {
+                                    <span class="menu-suffix">
+                                        <span class="badge secondary">Beta</span>
+                                    </span>
+                                }
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
         </div>
@@ -251,13 +243,22 @@
     [Parameter]
     public bool IsCollapsed { get; set; } = false;
 
+    [Parameter]
+    public bool IsToggled { get; set; } = false;
+
     public void BtnCollapseClicked()
     {
         IsCollapsed = !IsCollapsed;
     }
 
-    [Parameter]
-    public bool IsToggled { get; set; } = false;
+    private record SubMenuItem(string Href, string Text);
+    private record MenuItem(string Href, string Icon, string Title, string? Suffix = null, List<SubMenuItem>? SubMenuItems = null);
 
+    List<MenuItem> extraMenuItems = new List<MenuItem>
+    {
+        new MenuItem("#", "ri-book-2-fill", "Documentation", "Beta"),
+        new MenuItem("#", "ri-calendar-fill", "Calendar"),
+        new MenuItem("#", "ri-service-fill", "Examples"),
+    };
 
 }
