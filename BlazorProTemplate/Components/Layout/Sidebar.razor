@@ -107,7 +107,7 @@
                             </a>
                             @if (menuItem.IsSubMenu)
                             {
-                                <div class="sub-menu-list" style="display:@(menuItem.IsOpened ? "block" : "none!important");">
+                                <div class="sub-menu-list" style="display:block; height:@(menuItem.IsOpened ? $"{menuItem.SubMenuItems!.Count*50}px" : "0");">
                                     <ul>
                                         @foreach (var subMenuItem in menuItem.SubMenuItems!)
                                         {

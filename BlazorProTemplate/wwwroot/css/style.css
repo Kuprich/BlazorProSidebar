@@ -260,6 +260,7 @@
 }
 .layout .sidebar.has-bg-image:not(.collapsed) .menu > ul > .sub-menu > .sub-menu-list {
   background-color: rgba(11, 26, 44, 0.6);
+  transition: height 0.3s;
 }
 .layout.rtl .sidebar .menu .menu-item a .menu-icon {
   margin-left: 10px;
