@@ -20,7 +20,7 @@
 
 .sidebar {
   color: #7d84ab;
-  overflow-x: hidden !important;
+  /*overflow-x: hidden !important;*/
   position: relative;
 }
 .sidebar::-webkit-scrollbar-thumb {
@@ -421,4 +421,18 @@ a {
 .social-links a {
   margin: 0 10px;
   color: #3f4750;
+}
+
+
+/*My custom styles */
+
+.sidebar.collapsed{
+    overflow: visible!important;
+}
+
+.layout .sidebar.collapsed .menu > ul > .menu-item.sub-menu.open > .sub-menu-list {
+    position: absolute;
+    left: 80px;
+    top: 0;
+    transform: translateY(calc(-50% + 25px));
 }
