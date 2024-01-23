@@ -98,8 +98,8 @@
 
                     @foreach (var menuItem in generalMenuItems)
                     {
-                        <li class="menu-item @(menuItem.IsSubMenu ? "sub-menu" : "")">
-                            <a href="@menuItem.Href">
+                        <li class="menu-item @(menuItem.IsSubMenu ? "sub-menu" : "") @(menuItem.IsOpened ? "open" : "")">
+                            <a href="@menuItem.Href" @onclick="@(e => MenuItemClick(menuItem))">
                                 <span class="menu-icon">
                                     <i class="@menuItem.Icon"></i>
                                 </span>
@@ -184,9 +184,10 @@
     }
     private record Suffix(string Title, string Color);
     private record SubMenuItem(string Title, string Href = "#");
-    private record MenuItem(string Title, string Icon, string Href = "#", Suffix? Suffix = null , List<SubMenuItem>? SubMenuItems = null)
+    private record MenuItem(string Title, string Icon, string Href = "#", Suffix? Suffix = null, List<SubMenuItem>? SubMenuItems = null)
     {
         public bool IsSubMenu => SubMenuItems != null && SubMenuItems.Count != 0;
+        public bool IsOpened = false;
     }
 
     List<MenuItem> extraMenuItems = new List<MenuItem>
@@ -224,5 +225,12 @@
             new("Light"),
         }),
     };
+
+    private void MenuItemClick(MenuItem menuItem)
+    {
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+        menuItem.IsOpened = true;
+        StateHasChanged();
+    }
 
 }
