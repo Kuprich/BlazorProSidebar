@@ -15,6 +15,7 @@
             <nav class="menu open-current-submenu">
                 <ul>
                     <li class="menu-header"><span> GENERAL </span></li>
+
                     <li class="menu-item sub-menu">
                         <a href="#">
                             <span class="menu-icon">
@@ -94,106 +95,37 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="menu-item sub-menu">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-bar-chart-2-fill"></i>
-                            </span>
-                            <span class="menu-title">Charts</span>
-                        </a>
-                        <div class="sub-menu-list">
-                            <ul>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Pie chart</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Line chart</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Bar chart</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="menu-item sub-menu">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-shopping-cart-fill"></i>
-                            </span>
-                            <span class="menu-title">E-commerce</span>
-                        </a>
-                        <div class="sub-menu-list">
-                            <ul>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Products</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Orders</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">credit card</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="menu-item sub-menu">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-global-fill"></i>
-                            </span>
-                            <span class="menu-title">Maps</span>
-                        </a>
-                        <div class="sub-menu-list">
-                            <ul>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Google maps</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Open street map</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="menu-item sub-menu">
-                        <a href="#">
-                            <span class="menu-icon">
-                                <i class="ri-paint-brush-fill"></i>
-                            </span>
-                            <span class="menu-title">Theme</span>
-                        </a>
-                        <div class="sub-menu-list">
-                            <ul>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Dark</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span class="menu-title">Light</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+
+                    @foreach (var menuItem in generalMenuItems)
+                    {
+                        <li class="menu-item @(menuItem.IsSubMenu ? "sub-menu" : "")">
+                            <a href="@menuItem.Href">
+                                <span class="menu-icon">
+                                    <i class="@menuItem.Icon"></i>
+                                </span>
+                                <span class="menu-title">@menuItem.Title</span>
+                            </a>
+                            @if (menuItem.IsSubMenu)
+                            {
+                                <div class="sub-menu-list">
+                                    <ul>
+                                        @foreach (var subMenuItem in menuItem.SubMenuItems!)
+                                        {
+                                            <li class="menu-item">
+                                                <a href="@subMenuItem.Href">
+                                                    <span class="menu-title">@subMenuItem.Title</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            
+                        </li>
+                    }
+
                     <li class="menu-header" style="padding-top: 20px"><span> EXTRA </span></li>
-                    
+
                     @foreach (var menuItem in extraMenuItems)
                     {
                         <li class="menu-item">
@@ -205,7 +137,7 @@
                                 @if (menuItem.Suffix != null)
                                 {
                                     <span class="menu-suffix">
-                                        <span class="badge secondary">Beta</span>
+                                        <span class="badge @menuItem.Suffix.Color">@menuItem.Suffix.Title</span>
                                     </span>
                                 }
                             </a>
@@ -250,15 +182,47 @@
     {
         IsCollapsed = !IsCollapsed;
     }
-
-    private record SubMenuItem(string Href, string Text);
-    private record MenuItem(string Href, string Icon, string Title, string? Suffix = null, List<SubMenuItem>? SubMenuItems = null);
+    private record Suffix(string Title, string Color);
+    private record SubMenuItem(string Title, string Href = "#");
+    private record MenuItem(string Title, string Icon, string Href = "#", Suffix? Suffix = null , List<SubMenuItem>? SubMenuItems = null)
+    {
+        public bool IsSubMenu => SubMenuItems != null && SubMenuItems.Count != 0;
+    }
 
     List<MenuItem> extraMenuItems = new List<MenuItem>
     {
-        new MenuItem("#", "ri-book-2-fill", "Documentation", "Beta"),
-        new MenuItem("#", "ri-calendar-fill", "Calendar"),
-        new MenuItem("#", "ri-service-fill", "Examples"),
+        new(Title:"Documentation", Icon:"ri-book-2-fill", Suffix: new("Beta", "secondary")),
+        new(Title:"Calendar", Icon:"ri-calendar-fill"),
+        new(Title:"Examples", Icon:"ri-service-fill"),
+    };
+
+    List<MenuItem> generalMenuItems = new List<MenuItem>
+    {
+
+        new MenuItem(Title:"Charts", Icon:"ri-bar-chart-2-fill", SubMenuItems: new List<SubMenuItem>
+        {
+            new("Pie chart"),
+            new("Line chart"),
+            new("Bar chart"),
+        }),
+
+        new MenuItem(Title:"E-commerce", Icon:"ri-shopping-cart-fill", SubMenuItems: new List<SubMenuItem>
+        {
+            new("Products"),
+            new("Orders"),
+            new("Credit card"),
+        }),
+
+        new MenuItem(Title:"Maps", Icon:"ri-global-fill", SubMenuItems: new List<SubMenuItem>
+        {
+            new("Google maps"),
+            new("Open street map"),
+        }),
+        new MenuItem(Title:"Theme", Icon:"ri-paint-brush-fill", SubMenuItems: new List<SubMenuItem>
+        {
+            new("Dark"),
+            new("Light"),
+        }),
     };
 
 }
