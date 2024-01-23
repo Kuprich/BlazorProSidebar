@@ -79,8 +79,6 @@ class PopperObject {
         this.instance.state.elements.popper.style.visibility = "hidden";
     }
 }
-
-
 class Poppers {
 
 
@@ -117,7 +115,6 @@ class Poppers {
         });
     }
 }
-
 
 const slideUp = (target, duration = ANIMATION_DURATION) => {
     const { parentElement } = target;
@@ -175,7 +172,6 @@ const slideDown = (target, duration = ANIMATION_DURATION) => {
         target.style.removeProperty("transition-property");
     }, duration);
 };
-
 const slideToggle = (target, duration = ANIMATION_DURATION) => {
     if (window.getComputedStyle(target).display === "none")
         return slideDown(target, duration);

@@ -107,7 +107,7 @@
                             </a>
                             @if (menuItem.IsSubMenu)
                             {
-                                <div class="sub-menu-list">
+                                <div class="sub-menu-list" style="display:@(menuItem.IsOpened ? "block" : "none!important");">
                                     <ul>
                                         @foreach (var subMenuItem in menuItem.SubMenuItems!)
                                         {
@@ -178,10 +178,6 @@
     [Parameter]
     public bool IsToggled { get; set; } = false;
 
-    public void BtnCollapseClicked()
-    {
-        IsCollapsed = !IsCollapsed;
-    }
     private record Suffix(string Title, string Color);
     private record SubMenuItem(string Title, string Href = "#");
     private record MenuItem(string Title, string Icon, string Href = "#", Suffix? Suffix = null, List<SubMenuItem>? SubMenuItems = null)
@@ -226,11 +222,22 @@
         }),
     };
 
+    public void BtnCollapseClicked()
+    {
+        IsCollapsed = !IsCollapsed;
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+    }
+
     private void MenuItemClick(MenuItem menuItem)
     {
+        if (menuItem.IsOpened)
+        {
+            menuItem.IsOpened = false;
+            return;
+        }
+
         generalMenuItems.ForEach(x => x.IsOpened = false);
         menuItem.IsOpened = true;
-        StateHasChanged();
     }
 
 }
