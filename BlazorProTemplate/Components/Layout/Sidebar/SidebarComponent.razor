@@ -1,0 +1,109 @@
+﻿
+<aside id="sidebar" class="sidebar break-point-sm has-bg-image @(_isCollapsed ? "collapsed" : "") @(_isToggled ? "toggled" : "")">
+    <a @onclick="BtnCollapseClicked" id="btn-collapse" class="sidebar-collapser"><i class="ri-arrow-left-s-line"></i></a>
+    <div class="image-wrapper">
+        @* <img src="assets/images/sidebar-bg.jpg" alt="sidebar background" /> *@
+    </div>
+    <div class="sidebar-layout">
+        <div class="sidebar-header">
+            <div class="pro-sidebar-logo">
+                <div>P</div>
+                <h5>Pro Sidebar</h5>
+            </div>
+        </div>
+        <div class="sidebar-content">
+            <nav class="menu open-current-submenu">
+                <ul>
+                    <li class="menu-header"><span>BLAZOR</span></li>
+
+                    @foreach (var menuItem in standardItems)
+                    {
+                        <MenuItemComponent MenuItem="@menuItem" MenuItemClickCallback="MenuItemClick" />
+                    }
+
+                    <li class="menu-header"><span> GENERAL </span></li>
+
+                    @foreach (var menuItem in generalMenuItems)
+                    {
+                        <MenuItemComponent MenuItem="@menuItem" MenuItemClickCallback="MenuItemClick" />
+                    }
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="sidebar-footer" style="display:@(_isCollapsed? "none": "block")">
+            <div class="footer-box">
+                <div>
+                    <img class="react-logo"
+                         src="https://user-images.githubusercontent.com/25878302/213938106-ca8f0485-3f30-4861-9188-2920ed7ab284.png"
+                         alt="react" />
+                </div>
+                <div style="padding: 0 10px">
+                    <span style="display: block; margin-bottom: 10px">
+                        Pro sidebar is also available as a react package
+                    </span>
+                    <div style="margin-bottom: 15px">
+                        <img alt="preview badge"
+                             src="https://img.shields.io/github/stars/azouaoui-med/react-pro-sidebar?style=social" />
+                    </div>
+                    <div>
+                        <a href="https://github.com/azouaoui-med/react-pro-sidebar" target="_blank">Check it out!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</aside>
+
+
+@code {
+    private bool _isCollapsed { get; set; } = false;
+    private bool _isToggled { get; set; } = false;
+
+    List<MenuItem> standardItems = SidebarData.GetStandardMenuItems();
+    List<MenuItem> generalMenuItems = SidebarData.GetGeneralMenuItems();
+
+    public void BtnToggleClicked()
+    {
+        _isToggled = !_isToggled;
+        StateHasChanged();
+    }
+
+    public void BtnCollapseClicked()
+    {
+        _isCollapsed = !_isCollapsed;
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+    }
+
+    public void MouseClickedInOverlay()
+    {
+        if (_isToggled)
+            _isToggled = false;
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+        StateHasChanged();
+    }
+
+    public void MouseClickedInContent()
+    {
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+        StateHasChanged();
+    }
+
+    private void MenuItemClick(MenuItem menuItem)
+    {
+        if (menuItem.IsActive)
+        {
+            if (menuItem.HasChildMenuItems)
+                menuItem.IsOpened = !menuItem.IsOpened;
+            else if (_isCollapsed)
+                generalMenuItems.ForEach(x => x.IsOpened = false);
+
+            return;
+        }
+
+        generalMenuItems.ForEach(x => x.IsOpened = false);
+        menuItem.IsOpened = true;
+    }
+
+}

@@ -3,20 +3,23 @@
 
 <div class="layout has-sidebar fixed-sidebar fixed-header">
 
-    <Sidebar IsCollapsed = "@isCollapsed" IsToggled="@isToggled" />
+    <SidebarComponent @ref="sideBarComponent"/>
 
-    <div @onclick="MouseClickedInOverlay" id="overlay" class="overlay"></div>
+    <div @onclick="@(e => sideBarComponent?.MouseClickedInOverlay())" id="overlay" class="overlay"></div>
     <div class="layout">
 
-        <main class="content">
+        <main class="content" @onclick="@(e => sideBarComponent?.MouseClickedInContent())">
+            <div>
+                <a @onclick="(e => sideBarComponent?.BtnToggleClicked())" id="btn-toggle" href="#" class="sidebar-toggler break-point-sm">
+                    <i class="ri-menu-line ri-xl"></i>
+                </a>
+            </div>
+           
+            <div class="main-content">
+                @Body
+            </div>
 
-            <a @onclick="BtnToggleClicked" id="btn-toggle" href="#" class="sidebar-toggler break-point-sm">
-                <i class="ri-menu-line ri-xl"></i>
-            </a>
-
-            @Body
-
-            <Footer />
+            <FooterComponent />
 
         </main>
 
@@ -26,19 +29,5 @@
 </div>
 
 @code {
-
-    private bool isCollapsed = false;
-    private bool isToggled = false;
-
-    public void BtnToggleClicked()
-    {
-        isToggled = !isToggled;
-    }
-
-    public void MouseClickedInOverlay()
-    {
-        if (isToggled)
-            isToggled = false;
-    }
-
+    SidebarComponent? sideBarComponent;
 }
