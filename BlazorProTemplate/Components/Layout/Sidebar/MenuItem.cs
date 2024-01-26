@@ -4,9 +4,9 @@ public record Suffix(string Title, string Class);
 
 
 
-public class MenuItem(string href = "#", string? title=null, string? icon = null, Suffix? suffix = null, List<MenuItem>? childMenuItems = null)
+public class MenuItem(string? href = null, string? title = null, string? icon = null, Suffix? suffix = null, List<MenuItem>? childMenuItems = null)
 {
-    const int _itemHeight = 50;
+    private const int _itemHeight = 50;
 
     public string? Href { get; set; } = href;
     public string? Title { get; set; } = title;

@@ -2,7 +2,7 @@
 @if (MenuItem != null)
 {
     <li class="menu-item @(MenuItem.HasChildMenuItems ? "sub-menu" : "") @(MenuItem.IsOpened ? "open" : "")">
-        <a href="@MenuItem.Href" @onclick="MenuItemClick">
+        <NavLink @onclick="MenuItemClick" style="cursor:pointer">
             @if (MenuItem.Icon != null)
             {
                 <span class="menu-icon">
@@ -16,7 +16,7 @@
                     <span class="badge @MenuItem.Suffix.Class">@MenuItem.Suffix.Title</span>
                 </span>
             }
-        </a>
+        </NavLink>
         @if (MenuItem.HasChildMenuItems)
         {
             <div class="sub-menu-list" style="display:block; height:@($"{MenuItem.CalcSubMenuHeight()}px");">

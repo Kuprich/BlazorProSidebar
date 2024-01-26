@@ -12,20 +12,20 @@ public class SidebarData
 
     public static List<MenuItem> GetGeneralMenuItems() => new()
     {
-        new(href:"#", title:"Components", icon:"ri-vip-diamond-fill", suffix: new("Hot", "primary"), childMenuItems:
+        new(title:"Components", icon:"ri-vip-diamond-fill", suffix: new("Hot", "primary"), childMenuItems:
         [
             new MenuItem(href:"#", title:"Grid"),
-            new MenuItem(href:"#", title:"Layout", childMenuItems:
+            new MenuItem(title:"Layout", childMenuItems:
             [
-                new MenuItem(href:"#", title:"Forms", childMenuItems:
+                new MenuItem(title:"Forms", childMenuItems:
                 [
                    new MenuItem(href:"#", title:"Input"),
                    new MenuItem(href:"#", title:"Select"),
-                   new MenuItem(href:"#", title:"More", childMenuItems:
+                   new MenuItem(title:"More", childMenuItems:
                    [
                        new MenuItem(href:"#", title:"CheckBox"),
                        new MenuItem(href:"#", title:"Radio"),
-                       new MenuItem(href:"#", title:"Want more", childMenuItems:
+                       new MenuItem(title:"Want more", childMenuItems:
                        [
                            new MenuItem(href:"#", title:"You made it"),
                        ]),
@@ -34,7 +34,7 @@ public class SidebarData
             ]),
         ]),
 
-        new MenuItem(href:"#", title:"Charts", icon:"ri-bar-chart-2-fill", childMenuItems:
+        new MenuItem(title:"Charts", icon:"ri-bar-chart-2-fill", childMenuItems:
         [
             new MenuItem(href:"#", title:"Pie chart"),
             new MenuItem(href:"#", title:"Line chart"),
