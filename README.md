@@ -16,6 +16,50 @@ Responsive layout with advanced sidebar menu built with CSS and Blazor.
 + RTL support
 + Customizable
 
-![adaptive](https://github.com/Kuprich/BlazorProTemplate/assets/23151696/4147ba47-5e10-404a-a6c4-d11af89204b3)
+![adaptive](https://github.com/Kuprich/BlazorProTemplate/assets/23151696/4ee0bf34-bad4-4132-8147-5f596f096dbf)
 
-![submenu](https://github.com/Kuprich/BlazorProTemplate/assets/23151696/2770ba10-8b10-47bb-b5fd-7594f1a8d66f)
+![submenu](https://github.com/Kuprich/BlazorProTemplate/assets/23151696/df29ae5c-9175-4d02-8abe-30784d6dcc14)
+
+
+### Ohter
+
+Menu items can be represented as follows: 
+
+```C#
+List<MenuItem> menuItems = new()
+{
+    new MenuItem(href:"/home", title: "Home", icon:"ri-home-3-fill"),
+    new MenuItem(href:"/counter", title: "Counter", icon:"ri-add-box-fill"),
+    new MenuItem(href:"/weather", title: "Weather", icon:"ri-bar-chart-horizontal-line"),
+};
+
+```
+nested menu items can be easily added. Below is an example of a complex multi-level menu:
+
+```C#
+var menuItem = new MenuItem(title:"Components", icon:"ri-vip-diamond-fill", suffix: new("Hot", "primary"), childMenuItems:
+[
+    new MenuItem(href:"#", title:"Grid"),
+    new MenuItem(title:"Layout", childMenuItems:
+    [
+        new MenuItem(title:"Forms", childMenuItems:
+        [
+            new MenuItem(href:"#", title:"Input"),
+            new MenuItem(href:"#", title:"Select"),
+            new MenuItem(title:"More", childMenuItems:
+            [
+                new MenuItem(href:"#", title:"CheckBox"),
+                new MenuItem(href:"#", title:"Radio"),
+                new MenuItem(title:"Want more", childMenuItems:
+                [
+                    new MenuItem(href:"#", title:"You made it"),
+                ]),
+            ]),
+        ]),
+    ]),
+]);
+
+```
+
+
+
